@@ -4,17 +4,21 @@ public:
         int i = 0;
         int n = arr.size();
 
-        while(i+1 < n && arr[i] < arr[i+1]) {
+        // Increasing part
+        while (i + 1 < n && arr[i] < arr[i + 1]) {
             i++;
         }
-        if( i==0 || i == n-1) {
+
+        // Peak cannot be first or last
+        if (i == 0 || i == n - 1) {
             return false;
         }
 
-        while(i+1 < n && arr[i] > arr[i+1]) {
+        // Decreasing part
+        while (i + 1 < n && arr[i] > arr[i + 1]) {
             i++;
         }
 
-        return i == n-1;
+        return i == n - 1;
     }
 };
