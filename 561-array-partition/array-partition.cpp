@@ -1,11 +1,21 @@
 class Solution {
 public:
     int arrayPairSum(vector<int>& nums) {
-        sort(nums.begin(),nums.end());
-        int maxsum = 0;
-        for(int i=0; i<nums.size(); i+=2) {
-            maxsum += nums[i];
+        int k = 10000;
+        vector<int> countArr(2*k+1);
+        for(int i=0; i<nums.size(); i++) {
+            countArr[nums[i]+k]++;
         }
-        return maxsum;
+
+        int maxSum = 0;
+        bool isEvenIndex = true;
+        for(int i=0; i<2*k+1; i++) {
+            while(countArr[i] > 0) {
+                maxSum = maxSum + (isEvenIndex ? (i-k) : 0);
+                countArr[i]--;
+                isEvenIndex = !isEvenIndex;
+            }
+        }
+        return maxSum;
     }
 };
