@@ -5,10 +5,8 @@ public:
             if(s[i]!=s[j]) {
                 return false;
             }
-            else {
-                i++;
-                j--;
-            }
+            i++;
+            j--;
         }
         return true;
     }
@@ -19,10 +17,8 @@ public:
             if(s[i]!=s[j]) {
                 return palindromeHelper(i+1, j, s) || palindromeHelper(i, j-1, s);
             }
-            else {
-                i++;
-                j--;
-            }
+            i++;
+            j--;
         }
         return true;
     }
