@@ -15,9 +15,7 @@ public:
             if(s.count(curr)) {
                 return true;
             }
-            else {
-                s.insert(curr);
-            }
+            s.insert(curr);
             curr = curr->next;
         }
         return false;
