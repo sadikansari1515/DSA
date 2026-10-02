@@ -9,18 +9,21 @@ public:
         }
         return sum;
     }
-
     bool isHappy(int n) {
-        set<int> s;
+        int slow = n;
+        int fast = n;
 
-        while(n != 1) {
-            if(s.count(n)) {
-                return false;
+        while(true) {
+            slow = sumOfSquaresOfDigit(slow);
+            fast = sumOfSquaresOfDigit(sumOfSquaresOfDigit(fast));
+
+            if(fast == 1) {
+                return true;
             }
 
-            s.insert(n);
-            n = sumOfSquaresOfDigit(n);
+            if(fast == slow) {
+                return false;
+            }
         }
-        return true;
     }
 };
