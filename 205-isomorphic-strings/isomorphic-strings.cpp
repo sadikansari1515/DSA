@@ -1,19 +1,25 @@
 class Solution {
 public:
     bool isIsomorphic(string s, string t) {
-        if(s.length()!=t.length()) return false; 
-        vector<int> v(150,1000);
-        for(int i=0; i<s.length(); i++) {
-            int idx = (int)s[i];
-            if(v[idx]==1000) v[idx] = s[i] - t[i];
-            else if(v[idx]!=(s[i]-t[i])) return false;
-        }
-        for(int i=0; i<150; i++)
-            v[i] = 1000;
-        for(int i=0; i<s.length(); i++) {
-            int idx = (int)t[i];
-            if(v[idx]==1000) v[idx] = t[i] - s[i];
-            else if(v[idx]!=(t[i]-s[i])) return false;
+        map<char, char> sToT;
+        map<char, char> tToS;
+
+        for(int i=0; i<s.size(); i++) {
+            char _s = s[i];
+            char _t = t[i];
+            if(!sToT.count(_s) && !tToS.count(_t)) {
+                sToT[_s] =  _t;
+                tToS[_t] =  _s;
+            }
+            else if(!sToT.count(_s)) {
+                return false;
+            }
+            else if(!tToS.count(_t)) {
+                return false;
+            }
+            else if(sToT[_s] != _t && tToS[_t] != _s) {
+                return false;
+            }
         }
         return true;
     }
