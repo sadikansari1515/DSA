@@ -2,40 +2,44 @@ class Solution {
 public:
     bool isValidSudoku(vector<vector<char>>& board) {
 
-        vector<vector<int>> rows(9, vector<int>(9, 0));
-        vector<vector<int>> cols(9, vector<int>(9, 0));
-        vector<vector<int>> boxes(9, vector<int>(9, 0));
+        int n = 9;
 
-        // S: O(n^2), T: O(n^2)
+        vector<unordered_set<char>> rows(n);
+        vector<unordered_set<char>> cols(n);
+        vector<unordered_set<char>> boxes(n);
 
-        for (int r = 0; r < 9; r++) {
-            for (int c = 0; c < 9; c++) {
+        for (int r = 0; r < board.size(); r++) {
+            for (int c = 0; c < board[0].size(); c++) {
 
-                if (board[r][c] == '.') {
+                char cell = board[r][c];
+
+                if (cell == '.') {
                     continue;
                 }
 
-                int val = board[r][c] - '1';
-
-                if (rows[r][val] == 1) {
+                // Check row
+                if (rows[r].count(cell)) {
                     return false;
                 }
 
-                rows[r][val] = 1;
+                rows[r].insert(cell);
 
-                if (cols[c][val] == 1) {
+                // Check column
+                if (cols[c].count(cell)) {
                     return false;
                 }
 
-                cols[c][val] = 1;
+                cols[c].insert(cell);
 
-                int boxIdx = 3 * (r / 3) + (c / 3);
+                // Find box index
+                int boxIndex = 3 * (r / 3) + (c / 3);
 
-                if (boxes[boxIdx][val] == 1) {
+                // Check 3x3 box
+                if (boxes[boxIndex].count(cell)) {
                     return false;
                 }
 
-                boxes[boxIdx][val] = 1;
+                boxes[boxIndex].insert(cell);
             }
         }
 
