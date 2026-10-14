@@ -6,12 +6,12 @@ public:
         }
         int lo = 1;
         int hi = x;
-
+        // T: O(logn) S: O(1)
         int result = -1;
 
         while(lo <= hi) {
             int mid = lo + (hi - lo)/2;
-            long long sqrt = (long)mid*mid;
+            long sqrt = (long)mid*mid;
             if(sqrt == x) {
                 return mid;
             }
