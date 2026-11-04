@@ -16,7 +16,7 @@ public:
         int count  = 0;
 
         if(root->val >= maxVal) {
-            count++;
+            count = 1;
         }
         maxVal = max(maxVal, root->val);
 
