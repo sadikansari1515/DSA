@@ -1,14 +1,23 @@
+class Node {
+public:
+    int val;
+    Node* next;
+    Node(int val, Node* next) {
+        this->val = val;
+        this->next = next;
+    }
+};
 class MyCircularQueue {
 public:
-    vector<int> arr;
+    Node* head;
+    Node* tail;
     int count;
     int maxSize;
-    int head;
     MyCircularQueue(int k) {
-        arr.resize(k);
-        count = 0;
+        head = nullptr;
+        tail = nullptr;
         maxSize = k;
-        head = 0;
+        count = 0;
     }
     
     bool enQueue(int value) {
@@ -16,7 +25,14 @@ public:
             return false;
         }
 
-        arr[(head + count)%maxSize] = value;
+        Node* node = new Node(value, nullptr);
+        if(count == 0) {
+            head = node;
+            tail = node;
+        } else {
+            tail->next = node;
+            tail = node;
+        }
         count++;
         return true;
     }
@@ -25,9 +41,10 @@ public:
         if(isEmpty()) {
             return false;
         }
-
-        head = (head+1)%maxSize;
+        Node* temp = head;
+        head = head->next;
         count--;
+        delete temp;
         return true;
     }
     
@@ -36,7 +53,7 @@ public:
             return -1;
         }
 
-        return arr[head];
+        return head->val;
     }
     
     int Rear() {
@@ -44,7 +61,7 @@ public:
             return -1;
         }
 
-        return arr[(head + count-1)%maxSize];
+        return tail->val;
     }
     
     bool isEmpty() {
