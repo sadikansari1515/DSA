@@ -1,17 +1,36 @@
 class Solution {
 public:
-    bool isSymmetricHelper(TreeNode* left, TreeNode* right) {
-        if(left == nullptr && right == nullptr) return true;
-
-        if(left == nullptr || right == nullptr) return false;
-
-        if(left->val != right->val) return false;
-
-        return isSymmetricHelper(left->left,right->right) && isSymmetricHelper(left->right,right->left);
-    }
+    // iterative method
     bool isSymmetric(TreeNode* root) {
-        if(root == nullptr) return true;
+        queue<TreeNode*> q;
 
-        return isSymmetricHelper(root->left, root->right);
+        q.push(root);
+        q.push(root);
+
+        while(!q.empty()) {
+            TreeNode* node1 = q.front();
+            q.pop();
+            TreeNode* node2 = q.front();
+            q.pop();
+
+            if(node1 == nullptr && node2 == nullptr) {
+                continue;
+            }
+
+            if(node1 == nullptr || node2 == nullptr) {
+                return false;
+            }
+
+            if(node1->val != node2->val) {
+                return false;
+            }
+
+            q.push(node1->left);
+            q.push(node2->right);
+
+            q.push(node1->right);
+            q.push(node2->left);
+        }
+        return true;
     }
 };
