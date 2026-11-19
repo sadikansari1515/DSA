@@ -1,53 +1,57 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
+
 class Solution {
 public:
     TreeNode* deleteNode(TreeNode* root, int key) {
-        if(root == nullptr) return nullptr;
+        TreeNode* parent = nullptr;
+        TreeNode* curr = root;
 
-        if(key < root->val) {
-            root->left = deleteNode(root->left,key);
-        } else if(key > root->val) {
-            root->right = deleteNode(root->right,key);
-        } else {
-            // case 1: no child 
-            if(root->left == nullptr && root->right == nullptr) {
-                delete root;
+        while(curr != nullptr && curr->val != key) {
+            parent = curr;
+            if(key < curr->val) {
+                curr = curr->left;
+            }
+            else {
+                curr = curr->right;
+            }
+        }
+
+        if(curr == nullptr) {
+            return root;
+        }
+
+        if(curr->left != nullptr && curr->right != nullptr) {
+            TreeNode* successor = curr->right;
+            TreeNode* successorParent = curr;
+
+            while(successor->left != nullptr) {
+                successorParent = successor;
+                successor = successor->left;
+            }
+            curr->val = successor->val;
+            curr = successor;
+
+            parent = successorParent; 
+        }
+
+        if(curr->left == nullptr && curr->right == nullptr) {
+            if(parent == nullptr) {
                 return nullptr;
             }
 
-            // case 2: 1 child
-            if(root->left == nullptr) {
-                TreeNode* temp = root->right;
-                delete root;
-                return temp;
+            if(curr == parent->right) {
+                parent->right = nullptr;
+            } else {
+                parent->left = nullptr;
             }
-            if(root->right == nullptr) {
-                TreeNode* temp = root->left;
-                delete root;
-                return temp;
+        } else if(curr->left == nullptr || curr->right == nullptr) {
+            if(parent == nullptr) {
+                return curr->left != nullptr ? curr->left : curr->right;
             }
-
-            TreeNode* temp = root->right;
-
-            while(temp->left !=nullptr) {
-                temp = temp->left;
+            if(curr == parent->right) {
+                parent->right = curr->left != nullptr ? curr->left : curr->right;
+            } else {
+                parent->left = curr->left != nullptr ? curr->left : curr->right;
             }
-
-            root->val = temp->val;
-
-            root->right = deleteNode(
-                root->right, temp->val
-            );
         }
         return root;
     }
